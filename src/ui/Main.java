@@ -6,24 +6,36 @@ import java.io.InputStreamReader;
 
 public class Main {
 	
-	public static void hanoi(int n, int origin, int aux, int destiny) {
-		System.out.println(origin + " " + aux + " " + destiny);
-		if(n==1) {
-			System.out.println((origin-1) + " " + aux + " " + (destiny+1));
-		} else {
-			hanoi(n - 1, origin - 1, aux, destiny + 1);
-			System.out.println(origin + " " + aux + " " + destiny);
-			hanoi(n-1,origin-1 , aux+1, destiny);
+	
+	private static Integer[] towers;
+	private final static int  origin = 0;
+	private final static int  aux = 1;
+	private final static int desti = 2;
+	
+	public static void hanoi(int n, int org, int destiny, int ax, Integer[] tower) {
+		
+		if(n > 0) {
+				hanoi(n - 1, org, ax, destiny, tower);
+				tower[org]--;
+				tower[ax]++;
+				
+				System.out.println(towers[origin] + " " + towers[aux] + " " + towers[desti]);
+				
+				hanoi(n - 1, destiny, org, ax, tower);
 		}
+		
 	}
 	
-	public static void iterate(int x, int n) {
+	public static void moviment(int n) {
+		towers = new Integer[3];
 		
-		if(x < n) {
-			hanoi(n, n, 0, 0);
-			System.out.println();
-			iterate(x+1, n);
-		}
+		towers[origin] = n;
+		towers[aux] = 0;
+		towers[desti] = 0;
+		
+		System.out.println(towers[origin] + " " + towers[aux] + " " + towers[desti]);
+		
+		hanoi(n, 0, 1, 2, towers);
 	}
 	
 	public static void main(String[] args) throws NumberFormatException, IOException {
@@ -32,11 +44,12 @@ public class Main {
 		int n = 0;
 		for(int i = 0; i < size; i++) {
 			n = Integer.parseInt(bf.readLine());
-			hanoi(n, n, 0, 0);
+			
+			moviment(n);
 			System.out.println("");
 		}
 		
-		
+		bf.close();
 	}
 
 }
